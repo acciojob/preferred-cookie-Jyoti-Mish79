@@ -1,29 +1,85 @@
 <!DOCTYPE html>
-
 <html>
-  <head>
-    <link rel="stylesheet" href="styles.css" />
-  </head>
+<head>
+  <title>Font Customization</title>
+  <style>
+    body {
+      font-size: 16px;
+      color: black;
+    }
+  </style>
+  <script>
+    // Function to set the cookie
+    function setCookie(name, value, days) {
+      var expires = "";
+      if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toGMTString();
+      }
+      document.cookie = name + "=" + value + expires + "; path=/";
+    }
 
-  <body>
-    <!-- the entire body must be written by student -->
-    <form>
-      <label for="fontsize">Font Size:</label>
-      <input
-        type="number"
-        id="fontsize"
-        name="fontsize"
-        min="8"
-        max="72"
-        value="16"
-      />
-      <br />
-      <label for="fontcolor">Font Color:</label>
-      <input type="color" id="fontcolor" name="fontcolor" value="#000000" />
-      <br />
-      <input type="submit" value="Save" />
-    </form>
+    // Function to get the cookie value
+    function getCookie(name) {
+      var nameEQ = name + "=";
+      var ca = document.cookie.split(';');
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+      }
+      return null;
+    }
 
-    <script type="text/javascript" src="./script.js"></script>
-  </body>
+    // Function to apply the user's preferences
+    function applyPreferences() {
+      var fontSize = getCookie("fontSize");
+      var color = getCookie("color");
+      if (fontSize) {
+        document.body.style.fontSize = fontSize;
+        document.getElementById("font-size").value = fontSize;
+      }
+      if (color) {
+        document.body.style.color = color;
+        document.getElementById("color").value = color;
+      }
+    }
+
+    // Function to handle form submission
+    function savePreferences() {
+      var fontSize = document.getElementById("font-size").value;
+      var color = document.getElementById("color").value;
+      setCookie("fontSize", fontSize, 365);
+      setCookie("color", color, 365);
+      applyPreferences();
+    }
+
+    // Apply the user's preferences on page load
+    window.onload = applyPreferences;
+  </script>
+</head>
+<body>
+  <h1>Font Customization</h1>
+  <form>
+    <label for="font-size">Font Size:</label>
+    <select id="font-size">
+      <option value="12px">Small</option>
+      <option value="16px">Medium</option>
+      <option value="20px">Large</option>
+    </select>
+    <br>
+    <label for="color">Color:</label>
+    <select id="color">
+      <option value="black">Black</option>
+      <option value="red">Red</option>
+      <option value="blue">Blue</option>
+      <option value="green">Green</option>
+    </select>
+    <br>
+    <button type="button" onclick="savePreferences()">Save Preferences</button>
+  </form>
+  <h2>Lorem Ipsum</h2>
+  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+</body>
 </html>
